@@ -186,11 +186,11 @@ fun ProfileHeader( // sous composant de card (nom et métier)
     Column() {
         Text(
             text = "abcd@example.Com",
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.bodyMedium
         )
         Text(
             text = "1 grand rue Reims, 51100",
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }

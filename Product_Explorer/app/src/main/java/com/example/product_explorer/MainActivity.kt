@@ -17,12 +17,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            ProductHomeScreen(
-                featuredProduct = sampleProduct(),
-                onFeaturedProductClick = {// Plus tard : ouvrir le détail du produit
-                },
-                modifier = Modifier.padding(innerPadding)
-            )
+            Product_ExplorerTheme() {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    ProductHomeScreen(
+                        featuredProduct = sampleProduct(),
+                        onFeaturedProductClick = {// Plus tard : ouvrir le détail du produit
+                        },
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                }
+            }
+
         }
     }
 }

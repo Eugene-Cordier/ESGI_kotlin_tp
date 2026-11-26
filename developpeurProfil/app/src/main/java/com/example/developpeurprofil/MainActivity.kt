@@ -18,6 +18,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
@@ -37,7 +38,12 @@ class MainActivity : androidx.activity.ComponentActivity() {
                     skills = listOf("Kotlin", "Jetpack Compose", "Git", "Android"),
                     isAvailable = true,
                     onContactClick = { },
-                    onAvailabilityClick = { }
+                    onAvailabilityClick = { },
+                    projects = listOf(
+                        Project("project1", "https://github.com"),
+                        Project("project2", "https://gitlab.com"),
+                        Project("project3", "https://github.com")
+                    )
                 )
             }
         }
@@ -53,6 +59,7 @@ fun ProfileScreen( // équivalent de main
     isAvailable: Boolean,
     onContactClick: () -> Unit,
     onAvailabilityClick: () -> Unit,
+    projects: List<Project>,
     modifier: Modifier = Modifier
 ) {
     Scaffold(modifier = modifier) { innerPadding ->
@@ -64,6 +71,7 @@ fun ProfileScreen( // équivalent de main
             isAvailable = isAvailable,
             onContactClick = onContactClick,
             onAvailabilityClick = onAvailabilityClick,
+            projects =projects,
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(16.dp)
@@ -80,6 +88,7 @@ fun ProfileCard( //card
     isAvailable: Boolean,
     onContactClick: () -> Unit,
     onAvailabilityClick: () -> Unit,
+    projects: List<Project>,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -100,6 +109,11 @@ fun ProfileCard( //card
                 text = description,
                 style = MaterialTheme.typography.bodyMedium
             )
+            AvailabilityInfo(
+                isAvailable = isAvailable,
+                onClick = onAvailabilityClick,
+                modifier = Modifier.fillMaxWidth()
+            )
             Text(
                 text = "Compétences",
                 style = MaterialTheme.typography.titleMedium
@@ -107,15 +121,19 @@ fun ProfileCard( //card
             LazyColumn(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 items(skills.size) { skill -> SkillItem(skills[skill]) }
             }
-            AvailabilityInfo(
-                isAvailable = isAvailable,
-                onClick = onAvailabilityClick,
-                modifier = Modifier.fillMaxWidth()
-            )
             ProfileActions(
                 onContactClick = onContactClick,
                 modifier = Modifier.fillMaxWidth()
             )
+            Text(
+                text = "Mes projets",
+                style = MaterialTheme.typography.titleMedium
+            )
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                items(projects.size){
+                        project -> ProjectItem(projects[project].title, projects[project].url)
+                }
+            }
         }
     }
 }
@@ -198,6 +216,40 @@ fun ProfileActions( // sous composant de card
     }
 }
 
+@Composable
+fun ProjectItem(
+    title: String,
+    url: String,
+    modifier: Modifier = Modifier
+) {
+    val uriHandler = LocalUriHandler.current
+
+    Surface(
+        modifier = modifier.clickable { // lien
+                uriHandler.openUri(url)
+            },
+        shape = RoundedCornerShape(10.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary
+            )
+
+            Text(
+                text = "Voir le projet ↗",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+    }
+}
+
 // autres exemples de card
 @Preview(showBackground = true, name = "Profil Android junior")
 @Composable
@@ -210,7 +262,8 @@ fun PreviewProfilAndroidJunior() {
             skills = listOf("Kotlin", "Jetpack Compose", "Git", "Android"),
             isAvailable = true,
             onContactClick = {},
-            onAvailabilityClick = {}
+            onAvailabilityClick = {},
+            projects = listOf()
         )
     }
 }
@@ -226,7 +279,13 @@ fun PreviewProfilFullStack() {
             skills = listOf("Java", "JavaScript", "SQL", "HTML / CSS"),
             isAvailable = false,
             onContactClick = {},
-            onAvailabilityClick = {}
+            onAvailabilityClick = {},
+            projects = listOf()
         )
     }
 }
+
+data class Project(
+    val title: String,
+    val url: String
+)

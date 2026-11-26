@@ -21,6 +21,12 @@ fun ProductDetailScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        ProductImage(
+            productTitle = product.title,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp)
+        )
         ProductHeader(product.title, product.brand, product.category)
         ProductPriceCard(
             price = product.price,

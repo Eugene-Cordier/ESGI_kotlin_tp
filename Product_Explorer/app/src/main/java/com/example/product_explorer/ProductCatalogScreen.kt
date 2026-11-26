@@ -30,6 +30,12 @@ fun ProductCatalogScreen(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+       item {
+           Text(
+               text = "CatalaogueProduit",
+               style = MaterialTheme.typography.titleLarge
+           )
+       }
         item {
             Text(
                 text = "Explorez une sélection de produits disponibles localement.",

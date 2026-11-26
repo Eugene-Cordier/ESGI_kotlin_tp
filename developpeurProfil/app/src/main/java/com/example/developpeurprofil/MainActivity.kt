@@ -1,5 +1,7 @@
 package com.example.developpeurprofil
 
+import android.content.Intent
+import android.net.Uri
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -42,7 +44,10 @@ class MainActivity : androidx.activity.ComponentActivity() {
                     description = "Étudiant en informatique",
                     skills = listOf("Kotlin", "Jetpack Compose", "Git", "Android"),
                     isAvailable = true,
-                    onContactClick = { },
+                    onContactClick = {
+                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:+33123456789"))
+                        startActivity(intent)
+                    },
                     onAvailabilityClick = { },
                     projects = listOf(
                         Project("project1", "https://github.com"),

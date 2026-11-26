@@ -42,4 +42,21 @@ fun ProductCatalogContainer(
             favoriteProductIds + productId
         }
     }
+
+    ProductCatalogScreen(
+        products = filteredProducts,
+        onProductClick = onProductClick,
+        categories = categories,
+        searchQuery = searchQuery,
+        onSearchQueryChange = { searchQuery = it },
+        showOnlyInStock = showOnlyInStock,
+        onToggleStockFilter = {
+            showOnlyInStock = !showOnlyInStock
+        },
+        favoriteProductIds = favoriteProductIds,
+        onFavoriteClick = { productId ->
+            toggleFavorite(productId)
+        },
+        modifier = modifier
+    )
 }

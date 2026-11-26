@@ -19,9 +19,7 @@ fun ProductCatalogScreen(
     LazyColumn (
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
-// Ajoute une marge intérieure autour du contenu de la liste
         verticalArrangement = Arrangement.spacedBy(16.dp)
-// Ajoute un espace vertical entre les éléments de la liste.
     ) {
         item {
             Text(

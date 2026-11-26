@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
@@ -47,7 +48,8 @@ class MainActivity : androidx.activity.ComponentActivity() {
                         Project("project1", "https://github.com"),
                         Project("project2", "https://gitlab.com"),
                         Project("project3", "https://github.com")
-                    )
+                    ),
+                    contactInfo = listOf("abcd@example.com", "0123456789", "1 grand rue, Reims 51100")
                 )
             }
         }
@@ -64,6 +66,7 @@ fun ProfileScreen( // équivalent de main
     onContactClick: () -> Unit,
     onAvailabilityClick: () -> Unit,
     projects: List<Project>,
+    contactInfo: List<String>,
     modifier: Modifier = Modifier
 ) {
     Scaffold(modifier = modifier) { innerPadding ->
@@ -76,6 +79,7 @@ fun ProfileScreen( // équivalent de main
             onContactClick = onContactClick,
             onAvailabilityClick = onAvailabilityClick,
             projects =projects,
+            contactInfo = contactInfo,
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(16.dp)
@@ -93,6 +97,7 @@ fun ProfileCard( //card
     onContactClick: () -> Unit,
     onAvailabilityClick: () -> Unit,
     projects: List<Project>,
+    contactInfo: List<String>,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -109,13 +114,25 @@ fun ProfileCard( //card
                 jobTitle = jobTitle,
                 modifier = Modifier.fillMaxWidth()
             )
-            Image(
-                painter = painterResource(id = R.drawable.utilisateur),
-                contentDescription = "Photo de profil",
-                modifier = Modifier
-                    .size(120.dp),
-                contentScale = ContentScale.Crop
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.utilisateur),
+                    contentDescription = "Photo de profil",
+                    modifier = Modifier
+                        .size(100.dp),
+                    contentScale = ContentScale.Crop
+                )
+                ContactInfo(
+                    email = contactInfo[0],
+                    phone = contactInfo[1],
+                    address = contactInfo[2],
+                    modifier = Modifier.weight(1f)
+                )
+            }
             Text(
                 text = description,
                 style = MaterialTheme.typography.bodyMedium
@@ -164,6 +181,16 @@ fun ProfileHeader( // sous composant de card (nom et métier)
             text = jobTitle,
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.primary
+        )
+    }
+    Column() {
+        Text(
+            text = "abcd@example.Com",
+            style = MaterialTheme.typography.headlineSmall
+        )
+        Text(
+            text = "1 grand rue Reims, 51100",
+            style = MaterialTheme.typography.headlineSmall
         )
     }
 }
@@ -261,6 +288,23 @@ fun ProjectItem(
     }
 }
 
+@Composable
+fun ContactInfo(
+    email: String,
+    phone: String,
+    address: String,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        email
+        phone
+        address
+    }
+}
+
 // autres exemples de card
 @Preview(showBackground = true, name = "Profil Android junior")
 @Composable
@@ -274,7 +318,8 @@ fun PreviewProfilAndroidJunior() {
             isAvailable = true,
             onContactClick = {},
             onAvailabilityClick = {},
-            projects = listOf()
+            projects = listOf(),
+            contactInfo = listOf("adfefez@example.com", "0123456789", "1 rue truc, Reims 51100")
         )
     }
 }
@@ -291,7 +336,8 @@ fun PreviewProfilFullStack() {
             isAvailable = false,
             onContactClick = {},
             onAvailabilityClick = {},
-            projects = listOf()
+            projects = listOf(),
+            contactInfo = listOf("adfefez@example.com", "0123456789", "1 rue truc, Reims 51100")
         )
     }
 }

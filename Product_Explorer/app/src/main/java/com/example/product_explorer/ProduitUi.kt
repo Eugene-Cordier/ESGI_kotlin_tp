@@ -54,9 +54,8 @@ fun sampleProducts(): List<ProductUi> {
             title = "Casque Audio Pulse",
             brand = "SoundPeak",
             category = "Audio",
-            description = "Un casque confortable pour écouter de la musique et travailler dans de bonnes
-                    conditions .",
-                    price = 129.99,
+            description = "Un casque confortable pour écouter de la musique et travailler dans de bonnes conditions .",
+            price = 129.99,
             discountPercentage = 8.0,
             rating = 4.2,
             stock = 0,

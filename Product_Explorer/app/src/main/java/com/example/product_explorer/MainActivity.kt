@@ -41,3 +41,14 @@ fun ProductDetailScreenPreview() {
         )
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun ProductDetailScreenOutOfStockPreview() {
+    Product_ExplorerTheme() {
+        ProductDetailScreen(
+            product = sampleProductOutOfStock(),
+            onAddToCartClick = {}
+        )
+    }
+}

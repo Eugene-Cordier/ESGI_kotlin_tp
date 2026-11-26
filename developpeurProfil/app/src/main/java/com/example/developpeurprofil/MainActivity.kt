@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -104,13 +104,8 @@ fun ProfileCard( //card
                 text = "Compétences",
                 style = MaterialTheme.typography.titleMedium
             )
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                skills.forEach { skill ->
-                    SkillItem(
-                        skill = skill,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                items(skills.size) { skill -> SkillItem(skills[skill]) }
             }
             AvailabilityInfo(
                 isAvailable = isAvailable,

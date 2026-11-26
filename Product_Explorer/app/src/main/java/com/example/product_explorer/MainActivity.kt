@@ -53,3 +53,14 @@ fun ProductDetailScreenOutOfStockPreview() {
         )
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun ProductCatalogScreenPreview() {
+    Product_ExplorerTheme() {
+        ProductCatalogScreen(
+            products = sampleProducts(),
+            onProductClick = {}
+        )
+    }
+}

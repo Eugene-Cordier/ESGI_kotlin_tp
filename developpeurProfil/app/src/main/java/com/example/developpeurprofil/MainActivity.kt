@@ -59,41 +59,65 @@ class MainActivity : androidx.activity.ComponentActivity() {
 }
 
 // autres exemples de card
-@Preview(showBackground = true, name = "Profil Android junior")
+
+@Preview(showBackground = true, name = "Profil sans favoris")
 @Composable
-fun PreviewProfilAndroidJunior() {
+fun PreviewProfilSansFavoris() {
     MaterialTheme {
-        ProfilScreenContainer(
+        ProfileScreen(
             name = "Camille Martin",
             jobTitle = "Développeuse Android junior",
-            description = "Étudiante en informatique, motivée par le développement mobile et la création d'applications utiles.",
+            description = "Étudiante en informatique, motivée par le développement mobile.",
             skills = listOf("Kotlin", "Jetpack Compose", "Git", "Android"),
             isAvailable = true,
             onContactClick = {},
             onAvailabilityClick = {},
             projects = sampleprojectList(),
-            contactInfo = listOf("adfefez@example.com", "0123456789", "1 rue truc, Reims 51100")
+            contactInfo = listOf(
+                "camille@example.com",
+                "0123456789",
+                "Reims 51100"
+            ),
+            searchQuery = "",
+            onSearchQueryChange = {},
+            favoriteProjectIds = emptyList(),
+            onFavoriteClick = {},
+            showOnlyFavorites = false,
+            onToggleFavoriteFilter = {}
         )
     }
 }
 
-@Preview(showBackground = true, name = "Profil développeur full-stack")
+@Preview(showBackground = true, name = "Profil avec favoris")
 @Composable
-fun PreviewProfilFullStack() {
+fun PreviewProfilAvecFavoris() {
     MaterialTheme {
-        ProfilScreenContainer(
+        ProfileScreen(
             name = "Alex Bernard",
             jobTitle = "Développeur full-stack",
-            description = "Développeur curieux, j'aime travailler sur des projets web complets, du backend à l'interface utilisateur.",
+            description = "Développeur curieux, passionné par les applications web et mobiles.",
             skills = listOf("Java", "JavaScript", "SQL", "HTML / CSS"),
             isAvailable = false,
             onContactClick = {},
             onAvailabilityClick = {},
-            projects = sampleprojectList(),
-            contactInfo = listOf("adfefez@example.com", "0123456789", "1 rue truc, Reims 51100")
+            projects = sampleprojectList().filter {
+                it.id == 1 || it.id == 2
+            },
+            contactInfo = listOf(
+                "alex@example.com",
+                "0123456789",
+                "Reims 51100"
+            ),
+            searchQuery = "pro",
+            onSearchQueryChange = {},
+            favoriteProjectIds = listOf(1, 2),
+            onFavoriteClick = {},
+            showOnlyFavorites = true,
+            onToggleFavoriteFilter = {}
         )
     }
 }
+
 
 
 

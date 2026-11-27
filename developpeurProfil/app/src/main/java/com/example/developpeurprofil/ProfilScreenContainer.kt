@@ -1,12 +1,14 @@
 package com.example.developpeurprofil
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlin.String
 
 @Composable
@@ -20,30 +22,11 @@ fun ProfilScreenContainer(
     onAvailabilityClick: () -> Unit,
     projects: List<Project>,
     contactInfo: List<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    profileViewModel: ProfileViewModel = viewModel()
 ){
-    var searchQuery by rememberSaveable{
-        mutableStateOf("")
-    }
-    var favoriteProjectIds by rememberSaveable {
-        mutableStateOf(listOf<Int>())
-    }
-    fun toggleFavorite(productId: Int) {
-        favoriteProjectIds = if (favoriteProjectIds.contains(productId)) {
-            favoriteProjectIds - productId
-        } else {
-            favoriteProjectIds + productId
-        }
-    }
-    val filteredProjects = remember(projects, searchQuery) {
-        projects.filter { project ->
-            val multisearch =
-                project.title.contains(searchQuery, ignoreCase = true) ||
-                project.techno.contains(searchQuery,ignoreCase = true)
+    val uiState by profileViewModel.uiState.collectAsState()
 
-            multisearch
-        }
-    }
     ProfileScreen(
         name = name,
         jobTitle = jobTitle,
@@ -52,14 +35,14 @@ fun ProfilScreenContainer(
         isAvailable = isAvailable,
         onContactClick = {},
         onAvailabilityClick = {},
-        projects = filteredProjects,
+        projects = uiState.filteredProjects,
         contactInfo = contactInfo,
         modifier = Modifier,
-        searchQuery = searchQuery,
-        onSearchQueryChange = { searchQuery = it },
-        favoriteProjectIds = favoriteProjectIds,
+        searchQuery = uiState.searchQuery,
+        onSearchQueryChange = { query -> profileViewModel.onSearchQueryChange(query) },
+        favoriteProjectIds = uiState.favoriteProjectIds,
         onFavoriteClick = { projectId ->
-            toggleFavorite(projectId)
+            profileViewModel.toggleFavorite(projectId)
         },
     )
 }

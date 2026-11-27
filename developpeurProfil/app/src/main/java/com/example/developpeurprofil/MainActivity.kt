@@ -93,11 +93,7 @@ fun PreviewProfilFullStack() {
             isAvailable = false,
             onContactClick = {},
             onAvailabilityClick = {},
-            projects = listOf(
-                Project("project1", "https://github.com"),
-                Project("project2", "https://gitlab.com"),
-                Project("project3", "https://github.com")
-            ),
+            projects = sampleprojectList(),
             contactInfo = listOf("adfefez@example.com", "0123456789", "1 rue truc, Reims 51100")
         )
     }

@@ -43,7 +43,9 @@ fun ProfileScreen( // équivalent de main
     contactInfo: List<String>,
     modifier: Modifier = Modifier,
     searchQuery: String,
-    onSearchQueryChange: (String) -> Unit
+    onSearchQueryChange: (String) -> Unit,
+    onFavoriteClick: (Int) -> Unit,
+    favoriteProjectIds: List<Int>
 ) {
     Scaffold(modifier = modifier) { innerPadding ->
         ProfileCard(
@@ -60,7 +62,9 @@ fun ProfileScreen( // équivalent de main
                 .padding(innerPadding)
                 .padding(16.dp),
             searchQuery = searchQuery,
-            onSearchQueryChange = onSearchQueryChange
+            onSearchQueryChange = onSearchQueryChange,
+            onFavoriteClick = onFavoriteClick,
+            favoriteProjectIds = favoriteProjectIds
         )
     }
 }
@@ -78,7 +82,9 @@ fun ProfileCard( //card
     contactInfo: List<String>,
     modifier: Modifier = Modifier,
     searchQuery: String,
-    onSearchQueryChange: (String) ->Unit
+    onSearchQueryChange: (String) ->Unit,
+    onFavoriteClick: (Int) -> Unit,
+    favoriteProjectIds: List<Int>
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
@@ -159,8 +165,15 @@ fun ProfileCard( //card
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            items(projects.size){
-                    project -> ProjectItem(projects[project].title, projects[project].url)
+            items(projects.size) { project ->
+                ProjectItem(
+                    title = projects[project].title,
+                    url = projects[project].url,
+                    isFavorite = favoriteProjectIds.contains(projects[project].id),
+                    onFavoriteClick = {
+                        onFavoriteClick(projects[project].id)
+                    }
+                )
             }
         }
     }
@@ -258,7 +271,9 @@ fun ProfileActions( // sous composant de card
 fun ProjectItem(
     title: String,
     url: String,
-    modifier: Modifier = Modifier
+    isFavorite: Boolean,
+    onFavoriteClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -273,17 +288,38 @@ fun ProjectItem(
             modifier = Modifier.padding(12.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.primary
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable {
+                            uriHandler.openUri(url)
+                        },
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
 
-            Text(
-                text = "Voir le projet ↗",
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
+                    Text(
+                        text = "Voir le projet ↗",
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
+
+                Button(onClick = onFavoriteClick) {
+                    Text(
+                        text = if (isFavorite) "♥" else "♡"
+                    )
+                }
+            }
         }
     }
 }

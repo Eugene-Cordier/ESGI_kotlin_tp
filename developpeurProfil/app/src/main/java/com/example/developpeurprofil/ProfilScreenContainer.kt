@@ -25,7 +25,16 @@ fun ProfilScreenContainer(
     var searchQuery by rememberSaveable{
         mutableStateOf("")
     }
-
+    var favoriteProjectIds by rememberSaveable {
+        mutableStateOf(listOf<Int>())
+    }
+    fun toggleFavorite(productId: Int) {
+        favoriteProjectIds = if (favoriteProjectIds.contains(productId)) {
+            favoriteProjectIds - productId
+        } else {
+            favoriteProjectIds + productId
+        }
+    }
     val filteredProjects = remember(projects, searchQuery) {
         projects.filter { project ->
             val multisearch =
@@ -47,6 +56,10 @@ fun ProfilScreenContainer(
         contactInfo = contactInfo,
         modifier = Modifier,
         searchQuery = searchQuery,
-        onSearchQueryChange = { searchQuery = it }
+        onSearchQueryChange = { searchQuery = it },
+        favoriteProjectIds = favoriteProjectIds,
+        onFavoriteClick = { projectId ->
+            toggleFavorite(projectId)
+        },
     )
 }

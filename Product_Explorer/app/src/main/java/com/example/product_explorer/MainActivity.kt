@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,21 +33,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ProductDetailScreenPreview() {
-    Product_ExplorerTheme() {
-        ProductDetailScreen(
-            product = sampleProduct(),
-            onAddToCartClick = {}
-        )
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
 fun ProductDetailScreenOutOfStockPreview() {
-    Product_ExplorerTheme() {
+    Product_ExplorerTheme {
         ProductDetailScreen(
             product = sampleProductOutOfStock(),
             onAddToCartClick = {}
@@ -54,38 +45,44 @@ fun ProductDetailScreenOutOfStockPreview() {
     }
 }
 
+// Contenu commun aux previews du catalogue : écran stateless, sans ViewModel
+@Composable
+private fun ProductCatalogPreviewContent() {
+    Surface{
+        ProductCatalogScreen(
+            products = sampleProducts(),
+            categories = sampleCategories(),
+            searchQuery = "",
+            onSearchQueryChange = {},
+            showOnlyInStock = false,
+            onToggleStockFilter = {},
+            favoriteProductIds = emptyList(),
+            onFavoriteClick = {},
+            onProductClick = {}
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun ProductCatalogScreenPreview() {
-    Product_ExplorerTheme() {
-        ProductCatalogContainer(
-            onProductClick = {}
-        )
+    Product_ExplorerTheme {
+        ProductCatalogPreviewContent()
     }
 }
 
-@Preview(
-    showBackground = true,
-    name = "Catalogue - Dark Theme"
-)
+@Preview(showBackground = true, name = "Catalogue - Dark Theme")
 @Composable
 fun ProductCatalogScreenDarkPreview() {
     Product_ExplorerTheme(darkTheme = true) {
-        ProductCatalogContainer(
-            onProductClick = {}
-        )
+        ProductCatalogPreviewContent()
     }
 }
 
-@Preview(
-    showBackground = true,
-    name = "Catalogue - Light Theme"
-)
+@Preview(showBackground = true, name = "Catalogue - Light Theme")
 @Composable
 fun ProductCatalogScreenLightPreview() {
     Product_ExplorerTheme(darkTheme = false) {
-        ProductCatalogContainer(
-            onProductClick = {}
-        )
+        ProductCatalogPreviewContent()
     }
 }

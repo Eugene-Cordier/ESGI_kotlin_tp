@@ -29,6 +29,10 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 
 @Composable
 fun ProfileScreen( // équivalent de main
@@ -45,7 +49,9 @@ fun ProfileScreen( // équivalent de main
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
     onFavoriteClick: (Int) -> Unit,
-    favoriteProjectIds: List<Int>
+    favoriteProjectIds: List<Int>,
+    showOnlyFavorites: Boolean,
+    onToggleFavoriteFilter: () -> Unit,
 ) {
     Scaffold(modifier = modifier) { innerPadding ->
         ProfileCard(
@@ -64,7 +70,9 @@ fun ProfileScreen( // équivalent de main
             searchQuery = searchQuery,
             onSearchQueryChange = onSearchQueryChange,
             onFavoriteClick = onFavoriteClick,
-            favoriteProjectIds = favoriteProjectIds
+            favoriteProjectIds = favoriteProjectIds,
+            showOnlyFavorites = showOnlyFavorites,
+            onToggleFavoriteFilter = onToggleFavoriteFilter
         )
     }
 }
@@ -84,8 +92,13 @@ fun ProfileCard( //card
     searchQuery: String,
     onSearchQueryChange: (String) ->Unit,
     onFavoriteClick: (Int) -> Unit,
-    favoriteProjectIds: List<Int>
+    favoriteProjectIds: List<Int>,
+    showOnlyFavorites: Boolean,
+    onToggleFavoriteFilter: () -> Unit
 ) {
+    var showContactInfo by rememberSaveable {
+        mutableStateOf(false)
+    }
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
@@ -103,6 +116,20 @@ fun ProfileCard( //card
                 )
             }
             item {
+                Button(
+                    onClick = {
+                        showContactInfo = !showContactInfo
+                    }
+                ) {
+                    Text(
+                        text = if (showContactInfo)
+                            "Masquer les coordonnées"
+                        else
+                            "Afficher les coordonnées"
+                    )
+                }
+            }
+            item {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -115,12 +142,14 @@ fun ProfileCard( //card
                             .size(100.dp),
                         contentScale = ContentScale.Crop
                     )
-                    ContactInfo(
-                        email = contactInfo[0],
-                        phone = contactInfo[1],
-                        address = contactInfo[2],
-                        modifier = Modifier.weight(1f)
-                    )
+                    if (showContactInfo) {
+                        ContactInfo(
+                            email = contactInfo[0],
+                            phone = contactInfo[1],
+                            address = contactInfo[2],
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
                 }
             }
             item {
@@ -153,6 +182,26 @@ fun ProfileCard( //card
                 Text(
                     text = "Mes projets",
                     style = MaterialTheme.typography.titleMedium
+                )
+            }
+
+            item {
+                Button(
+                    onClick = onToggleFavoriteFilter
+                ) {
+                    Text(
+                        text = if (showOnlyFavorites)
+                            "Afficher tous les projets"
+                        else
+                            "Afficher uniquement les favoris"
+                    )
+                }
+            }
+
+            item {
+                Text(
+                    text = "${projects.size} projet(s) affiché(s)",
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
             item {

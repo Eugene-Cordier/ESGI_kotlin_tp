@@ -44,5 +44,9 @@ fun ProfilScreenContainer(
         onFavoriteClick = { projectId ->
             profileViewModel.toggleFavorite(projectId)
         },
+        showOnlyFavorites = uiState.showOnlyFavorites,
+        onToggleFavoriteFilter = {
+            profileViewModel.onToggleFavoriteFilter()
+        }
     )
 }

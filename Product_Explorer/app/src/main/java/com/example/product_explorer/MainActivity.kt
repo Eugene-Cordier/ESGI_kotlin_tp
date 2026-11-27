@@ -20,8 +20,6 @@ class MainActivity : ComponentActivity() {
             Product_ExplorerTheme() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     ProductCatalogContainer(
-                        products = sampleProducts(),
-                        categories = sampleCategories(),
                         onProductClick = {
 
                         },
@@ -61,8 +59,6 @@ fun ProductDetailScreenOutOfStockPreview() {
 fun ProductCatalogScreenPreview() {
     Product_ExplorerTheme() {
         ProductCatalogContainer(
-            products = sampleProducts(),
-            categories = sampleCategories(),
             onProductClick = {}
         )
     }
@@ -76,8 +72,6 @@ fun ProductCatalogScreenPreview() {
 fun ProductCatalogScreenDarkPreview() {
     Product_ExplorerTheme(darkTheme = true) {
         ProductCatalogContainer(
-            products = sampleProducts(),
-            categories = sampleCategories(),
             onProductClick = {}
         )
     }
@@ -91,8 +85,6 @@ fun ProductCatalogScreenDarkPreview() {
 fun ProductCatalogScreenLightPreview() {
     Product_ExplorerTheme(darkTheme = false) {
         ProductCatalogContainer(
-            products = sampleProducts(),
-            categories = sampleCategories(),
             onProductClick = {}
         )
     }

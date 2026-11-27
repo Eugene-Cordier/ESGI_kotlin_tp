@@ -39,7 +39,7 @@ class MainActivity : androidx.activity.ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
-                ProfileScreen(
+                ProfilScreenContainer(
                     name = "Cordier Eugene",
                     jobTitle = "Dev junior",
                     description = "Étudiant en informatique",
@@ -63,7 +63,7 @@ class MainActivity : androidx.activity.ComponentActivity() {
 @Composable
 fun PreviewProfilAndroidJunior() {
     MaterialTheme {
-        ProfileScreen(
+        ProfilScreenContainer(
             name = "Camille Martin",
             jobTitle = "Développeuse Android junior",
             description = "Étudiante en informatique, motivée par le développement mobile et la création d'applications utiles.",
@@ -81,7 +81,7 @@ fun PreviewProfilAndroidJunior() {
 @Composable
 fun PreviewProfilFullStack() {
     MaterialTheme {
-        ProfileScreen(
+        ProfilScreenContainer(
             name = "Alex Bernard",
             jobTitle = "Développeur full-stack",
             description = "Développeur curieux, j'aime travailler sur des projets web complets, du backend à l'interface utilisateur.",

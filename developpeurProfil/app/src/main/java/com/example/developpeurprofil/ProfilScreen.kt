@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,6 +28,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.compose.material3.OutlinedTextField
 
 @Composable
 fun ProfileScreen( // équivalent de main
@@ -39,7 +41,9 @@ fun ProfileScreen( // équivalent de main
     onAvailabilityClick: () -> Unit,
     projects: List<Project>,
     contactInfo: List<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit
 ) {
     Scaffold(modifier = modifier) { innerPadding ->
         ProfileCard(
@@ -54,7 +58,9 @@ fun ProfileScreen( // équivalent de main
             contactInfo = contactInfo,
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(16.dp)
+                .padding(16.dp),
+            searchQuery = searchQuery,
+            onSearchQueryChange = onSearchQueryChange
         )
     }
 }
@@ -70,69 +76,91 @@ fun ProfileCard( //card
     onAvailabilityClick: () -> Unit,
     projects: List<Project>,
     contactInfo: List<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    searchQuery: String,
+    onSearchQueryChange: (String) ->Unit
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
         tonalElevation = 3.dp
     ) {
-        Column(
+        LazyColumn(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            ProfileHeader(
-                name = name,
-                jobTitle = jobTitle,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.utilisateur),
-                    contentDescription = "Photo de profil",
-                    modifier = Modifier
-                        .size(100.dp),
-                    contentScale = ContentScale.Crop
-                )
-                ContactInfo(
-                    email = contactInfo[0],
-                    phone = contactInfo[1],
-                    address = contactInfo[2],
-                    modifier = Modifier.weight(1f)
+            item {
+                ProfileHeader(
+                    name = name,
+                    jobTitle = jobTitle,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodyMedium
-            )
-            AvailabilityInfo(
-                isAvailable = isAvailable,
-                onClick = onAvailabilityClick,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Text(
-                text = "Compétences",
-                style = MaterialTheme.typography.titleMedium
-            )
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                items(skills.size) { skill -> SkillItem(skills[skill]) }
-            }
-            ProfileActions(
-                onContactClick = onContactClick,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Text(
-                text = "Mes projets",
-                style = MaterialTheme.typography.titleMedium
-            )
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(projects.size){
-                        project -> ProjectItem(projects[project].title, projects[project].url)
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.utilisateur),
+                        contentDescription = "Photo de profil",
+                        modifier = Modifier
+                            .size(100.dp),
+                        contentScale = ContentScale.Crop
+                    )
+                    ContactInfo(
+                        email = contactInfo[0],
+                        phone = contactInfo[1],
+                        address = contactInfo[2],
+                        modifier = Modifier.weight(1f)
+                    )
                 }
+            }
+            item {
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+            item {
+                AvailabilityInfo(
+                    isAvailable = isAvailable,
+                    onClick = onAvailabilityClick,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item {
+                Text(
+                    text = "Compétences",
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+            items(skills.size) { skill -> SkillItem(skills[skill]) }
+            item {
+                ProfileActions(
+                    onContactClick = onContactClick,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item {
+                Text(
+                    text = "Mes projets",
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+            item {
+                OutlinedTextField(
+                    value = searchQuery,
+                    onValueChange = onSearchQueryChange,
+                    label = {
+                        Text(text = "Rechercher un projet")
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            items(projects.size){
+                    project -> ProjectItem(projects[project].title, projects[project].url)
             }
         }
     }
@@ -276,3 +304,4 @@ fun ContactInfo(
         address
     }
 }
+

@@ -50,11 +50,7 @@ class MainActivity : androidx.activity.ComponentActivity() {
                         startActivity(intent)
                     },
                     onAvailabilityClick = { },
-                    projects = listOf(
-                        Project("project1", "https://github.com"),
-                        Project("project2", "https://gitlab.com"),
-                        Project("project3", "https://github.com")
-                    ),
+                    projects = sampleprojectList(),
                     contactInfo = listOf("abcd@example.com", "0123456789", "1 grand rue, Reims 51100")
                 )
             }
